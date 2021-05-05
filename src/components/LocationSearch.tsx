@@ -2,7 +2,12 @@ import React from "react";
 
 function LocationSearch() {
   return (
-    <div>pickles</div>
+    <input
+      id='locationInput'
+      type='text'
+      value=''
+      placeholder='City name'
+    />
   );
 }
 
