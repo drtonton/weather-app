@@ -12,21 +12,24 @@ async function fetchCityMatches(cityName: string): Promise<string> {
 
 function LocationSearch() {
   const [inputValue, setInputValue] = useState('');
-  const [isActive, setIsActive] = useState(false);
 
   return (
-    <input
-      className={`input ${isActive && inputValue !== '' && 'active'}`}
-      id='locationInput'
-      type='text'
-      value={inputValue}
-      placeholder='City name'
-      onChange={(e) => {
-        fetchCityMatches(e.target.value);
-        setInputValue(e.target.value);
-      }}
-      onFocus={() => setIsActive(true)}
-    />
+    <div className='fieldWrapper'>
+      <input
+        className='fieldInput'
+        id='locationInput'
+        type='text'
+        value={inputValue}
+        onChange={(e) => {
+          fetchCityMatches(e.target.value);
+          setInputValue(e.target.value);
+        }}
+      />
+      <label className='fieldLabel'>
+        City name
+      </label>
+    </div>
+    
   );
 }
 
