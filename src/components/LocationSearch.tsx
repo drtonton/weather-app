@@ -1,13 +1,28 @@
 import React, { useState } from "react";
 import axios from 'axios';
 
+let timerId: any;
 
-async function fetchCityMatches(cityName: string): Promise<string> {
+async function fetchCityMatches(cityName: string): Promise<undefined> {
   const url = `http://localhost:8001/city/?name=${cityName}`;
-  console.log('url', url);
-  const matched = await axios.get(url);
-  console.log('matched', matched);
-  return 'bro';
+  await axios.get(url);
+  return;
+}
+
+// function throttler(func: Function, funcArg: string, delay: number) {
+//   if (timerId) return;
+//   timerId = setTimeout(() => {
+//     func(funcArg);
+//     timerId = undefined;
+//   }, delay);
+// }
+
+function throttledCitySearch(searchValue: string): void {
+  if (timerId) return;
+  timerId = setTimeout(async() => {
+    await fetchCityMatches(searchValue);
+    timerId = undefined;
+  }, 500);
 }
 
 function LocationSearch() {
@@ -21,7 +36,8 @@ function LocationSearch() {
         type='text'
         value={inputValue}
         onChange={(e) => {
-          fetchCityMatches(e.target.value);
+          // throttler(fetchCityMatches, e.target.value, 500);
+          throttledCitySearch(e.target.value);
           setInputValue(e.target.value);
         }}
       />
