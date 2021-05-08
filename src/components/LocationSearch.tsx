@@ -16,8 +16,25 @@ type City = {
 function LocationSearch() {
   const [inputValue, setInputValue] = useState('');
   const [matchedCities, setMatchedCities] = useState<City[]>([]);
+  const [selectedCity, setSelectedCity] = useState('');
   const [weatherData, setWeatherData] = useState({});
 
+  // API CALLS
+  // todo: instead of any[], make a Type of the return shape and enforce it
+  const fetchCityMatches = async (fieldInput: string): Promise<any[]> => {
+    const url = `http://localhost:8001/city/?name=${fieldInput}`;
+    const cities = await axios.get(url);
+    return cities.data;
+  }
+
+  const fetchWeatherData = async (cityId: number): Promise<{}> => {
+    const url = `http://localhost:8001/weather/?cityId=${cityId}`;
+    const weatherData = await axios.get(url);
+    console.log('weahter data', weatherData);
+    return weatherData.data;
+  }
+
+  // HELPER FUNCTIONS
   const throttledCitySearch = (searchValue: string): void => {
     if (timer) {
       clearTimeout(timer);
@@ -29,12 +46,11 @@ function LocationSearch() {
     }, 500);
   }
 
-  // todo: instead of any[], make a Type of the return shape and enforce it
-  const fetchCityMatches = async (cityName: string): Promise<any[]> => {
-    console.log('fetching: ', cityName);
-    const url = `http://localhost:8001/city/?name=${cityName}`;
-    const cities = await axios.get(url);
-    return cities.data;
+  const handleCitySelect = (city: City): void => {
+    setSelectedCity(`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`);
+    setMatchedCities([]);
+    setInputValue('');
+    setWeatherData(fetchWeatherData(city.id));
   }
 
   return (
@@ -54,12 +70,17 @@ function LocationSearch() {
           City name
         </label>
       </div>
-      <div>
+      <div className="searchResults">
         {inputValue !== '' && matchedCities.map(city => (
-          <div key={city.id} onClick={() => console.log(city)}>
+          <div key={city.id} onClick={() => handleCitySelect(city)}>
             {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
           </div>
         ))}
+      </div>
+      <div className="weatherData">
+        {selectedCity && (
+          <div>Results for {selectedCity}</div>
+        )}
       </div>
     </div>
     
