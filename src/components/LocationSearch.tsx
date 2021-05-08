@@ -3,35 +3,26 @@ import axios from 'axios';
 
 let timerId: any;
 
-interface City {
+// todo: needs to go in a type file
+type City = {
+  id: number;
   name: string;
+  state: string;
+  country: string;
 }
-
-// function fetchCityMatches(cityName: string): void {
-//   const url = `http://localhost:8001/city/?name=${cityName}`;
-//   axios.get(url);
-// }
-
-// function throttledCitySearch(searchValue: string): void {
-//   if (timerId) return;
-//   timerId = setTimeout(async() => {
-//     await fetchCityMatches(searchValue);
-//     timerId = undefined;
-//   }, 500);
-// }
 
 function LocationSearch() {
   const [inputValue, setInputValue] = useState('');
-  const [matchedCities, setMatchedCities] = useState([]);
+  const [matchedCities, setMatchedCities] = useState<City[]>([]);
 
-  const throttledCitySearch = (searchValue: string): string | undefined => {
+  // todo: decide whether to do this yourself, or with lodash (must uninstall lodash if you choose this)
+  const throttledCitySearch = (searchValue: string): undefined => {
     if (timerId) return;
     timerId = setTimeout(async() => {
       const matched = await fetchCityMatches(searchValue);
-      console.log('matched', matched);
-      // setMatchedCities(matched);
+      setMatchedCities(matched);
       timerId = undefined;
-      return 'bro';
+      return;
     }, 100);
   }
 
@@ -43,21 +34,31 @@ function LocationSearch() {
   }
 
   return (
-    <div className='fieldWrapper'>
-      <input
-        className='fieldInput'
-        id='locationInput'
-        type='text'
-        value={inputValue}
-        onChange={(e) => {
-          throttledCitySearch(e.target.value);
-          setInputValue(e.target.value);
-        }}
-      />
-      <label className='fieldLabel'>
-        City name
-      </label>
+    <div>
+      <div className='fieldWrapper'>
+        <input
+          className='fieldInput'
+          id='locationInput'
+          type='text'
+          value={inputValue}
+          onChange={(e) => {
+            throttledCitySearch(e.target.value);
+            setInputValue(e.target.value);
+          }}
+        />
+        <label className='fieldLabel'>
+          City name
+        </label>
+      </div>
+      <div>
+        {inputValue !== '' && matchedCities.map(city => (
+          <div key={city.id}>
+            {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
+          </div>
+        ))}
+      </div>
     </div>
+    
     
   );
 }
