@@ -27,6 +27,7 @@ function LocationSearch() {
     return cities.data;
   }
 
+  // todo: make a type for the weather data
   const fetchWeatherData = async (cityId: number): Promise<{}> => {
     const url = `http://localhost:8001/weather/?cityId=${cityId}`;
     const weatherData = await axios.get(url);
