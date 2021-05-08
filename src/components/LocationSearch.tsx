@@ -3,6 +3,8 @@ import axios from 'axios';
 
 let timer: any;
 
+// todo: prevent whitespace from being entered as first character in input
+
 // todo: needs to go in a type file
 type City = {
   id: number;
@@ -14,6 +16,7 @@ type City = {
 function LocationSearch() {
   const [inputValue, setInputValue] = useState('');
   const [matchedCities, setMatchedCities] = useState<City[]>([]);
+  const [weatherData, setWeatherData] = useState({});
 
   const throttledCitySearch = (searchValue: string): void => {
     if (timer) {
@@ -53,7 +56,7 @@ function LocationSearch() {
       </div>
       <div>
         {inputValue !== '' && matchedCities.map(city => (
-          <div key={city.id}>
+          <div key={city.id} onClick={() => console.log(city)}>
             {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
           </div>
         ))}
@@ -65,12 +68,3 @@ function LocationSearch() {
 }
 
 export default LocationSearch;
-
-
-/*
--> type char
--> function is invoked
--> timer is 1
--> after timer expires -> fetch
--> 
-*/
