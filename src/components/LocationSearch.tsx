@@ -31,7 +31,7 @@ function LocationSearch() {
   const fetchWeatherData = async (cityId: number): Promise<{}> => {
     const url = `http://localhost:8001/weather/?cityId=${cityId}`;
     const weatherData = await axios.get(url);
-    console.log('weahter data', weatherData);
+    console.log('weahter data', JSON.stringify(weatherData));
     return weatherData.data;
   }
 
@@ -49,6 +49,7 @@ function LocationSearch() {
 
   const handleCitySelect = (city: City): void => {
     setSelectedCity(`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`);
+    // clear input and related results
     setMatchedCities([]);
     setInputValue('');
     setWeatherData(fetchWeatherData(city.id));
@@ -79,8 +80,11 @@ function LocationSearch() {
         ))}
       </div>
       <div className="weatherData">
-        {selectedCity && (
+        {selectedCity && weatherData && (
           <div>Results for {selectedCity}</div>
+          // sunrise/sunset times
+          // feels like and hi/lo
+          // general description
         )}
       </div>
     </div>
