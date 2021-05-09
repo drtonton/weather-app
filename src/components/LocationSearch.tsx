@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import axios from 'axios';
 
 let timer: any;
@@ -6,18 +6,44 @@ let timer: any;
 // todo: prevent whitespace from being entered as first character in input
 
 // todo: needs to go in a type file
-type City = {
+interface City {
   id: number;
   name: string;
   state: string;
   country: string;
 }
 
+interface WeatherData {
+  generalDescription: string;
+  descriptionIconUrl: string;
+  hiTempFahr: any;
+  loTempFahr: any;
+  feelsLikeFahr: any;
+  currentTempFahr: any;
+  hiTempCels: any;
+  loTempCels: any;
+  feelsLikeCels: any;
+  currentTempCels: any;
+}
+
 function LocationSearch() {
   const [inputValue, setInputValue] = useState('');
   const [matchedCities, setMatchedCities] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState('');
-  const [weatherData, setWeatherData] = useState({});
+  const [weatherData, setWeatherData] = useState<WeatherData>({
+    generalDescription: '',
+    descriptionIconUrl: '',
+    hiTempFahr: undefined,
+    loTempFahr: undefined,
+    feelsLikeFahr: undefined,
+    currentTempFahr: undefined,
+    hiTempCels: undefined,
+    loTempCels: undefined,
+    feelsLikeCels: undefined,
+    currentTempCels: undefined
+  });
+  const [displayWeatherData, setDisplayWeatherData] = useState<boolean>(false);
+  const [isFahrenheit, setIsFahrenheit] = useState<boolean>(true);
 
   // API CALLS
   // todo: instead of any[], make a Type of the return shape and enforce it
@@ -28,10 +54,9 @@ function LocationSearch() {
   }
 
   // todo: make a type for the weather data
-  const fetchWeatherData = async (cityId: number): Promise<{}> => {
+  const fetchWeatherData = async (cityId: number): Promise<WeatherData> => {
     const url = `http://localhost:8001/weather/?cityId=${cityId}`;
     const weatherData = await axios.get(url);
-    console.log('weahter data', JSON.stringify(weatherData));
     return weatherData.data;
   }
 
@@ -47,12 +72,12 @@ function LocationSearch() {
     }, 500);
   }
 
-  const handleCitySelect = (city: City): void => {
+  const handleCitySelect = async (city: City): Promise<void> => {
     setSelectedCity(`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`);
-    // clear input and related results
     setMatchedCities([]);
     setInputValue('');
-    setWeatherData(fetchWeatherData(city.id));
+    setWeatherData(await fetchWeatherData(city.id));
+    setDisplayWeatherData(true);
   }
 
   return (
@@ -72,19 +97,27 @@ function LocationSearch() {
           City name
         </label>
       </div>
-      <div className="searchResults">
+      <div className='searchResults'>
         {inputValue !== '' && matchedCities.map(city => (
           <div key={city.id} onClick={() => handleCitySelect(city)}>
             {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
           </div>
         ))}
       </div>
-      <div className="weatherData">
-        {selectedCity && weatherData && (
-          <div>Results for {selectedCity}</div>
-          // sunrise/sunset times
-          // feels like and hi/lo
-          // general description
+      <div className='weatherData'>
+        {/* todo: use a loader here instead */}
+        {displayWeatherData && (
+          <div>
+            <div className="temperatureData">
+              <div onClick={() => setIsFahrenheit(!isFahrenheit)}>{isFahrenheit ? '°F' : '°C'}</div>
+              <div>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
+            </div>
+            <div className='generalInfo'>
+              <div>{selectedCity}</div>
+              <div>{weatherData.generalDescription}</div>
+              <img alt="meaning" src={weatherData.descriptionIconUrl} width='150' height='150'></img>
+            </div>
+          </div>
         )}
       </div>
     </div>
@@ -94,3 +127,16 @@ function LocationSearch() {
 }
 
 export default LocationSearch;
+
+// interface WeatherData {
+//   generalDescription: string;
+//   descriptionIconUrl: string;
+//   hiTempFahr: number;
+//   loTempFahr: number;
+//   feelsLikeFahr: number;
+//   currentTempFahr: number;
+//   hiTempCels: number;
+//   loTempCels: number;
+//   feelsLikeCels: number;
+//   currentTempCels: number;
+// }
