@@ -106,8 +106,9 @@ function LocationSearch() {
                 <div>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
                 {/* <div onClick={() => setIsFahrenheit(!isFahrenheit)}>{isFahrenheit ? '°F' : '°C'}</div> */}
                 <div className='temperatureScale' onClick={() => setIsFahrenheit(!isFahrenheit)}>
-                  <div>°F |</div>
-                  <div>°C</div>
+                  <div className={isFahrenheit ? 'selectedScale' : ''}>°F</div>
+                  <div>|</div>
+                  <div className={!isFahrenheit ? 'selectedScale' : ''}>°C</div>
                 </div>
               </div>
               <div className='generalInfo'>
