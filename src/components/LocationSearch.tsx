@@ -91,7 +91,7 @@ function LocationSearch() {
           value={inputValue}
           onChange={(e) => {
             throttledCitySearch(e.target.value);
-            setInputValue(e.target.value);
+            setInputValue(e.target.value); // todo: prevent whitespace as first char
           }}
         />
         <label className='fieldLabel'>
