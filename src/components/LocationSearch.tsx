@@ -103,7 +103,8 @@ function LocationSearch() {
           {displayWeatherData && (
             <div>
               <div className='temperatureData'>
-                <div>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
+                <img alt='default' src={weatherData.descriptionIconUrl} width='60' height='60'></img>
+                <div className='temperatureValue'>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
                 {/* <div onClick={() => setIsFahrenheit(!isFahrenheit)}>{isFahrenheit ? '°F' : '°C'}</div> */}
                 <div className='temperatureScale' onClick={() => setIsFahrenheit(!isFahrenheit)}>
                   <div className={isFahrenheit ? 'selectedScale' : ''}>°F</div>
@@ -114,7 +115,6 @@ function LocationSearch() {
               <div className='generalInfo'>
                 <div>{selectedCity}</div>
                 <div>{weatherData.generalDescription}</div>
-                <img alt='default' src={weatherData.descriptionIconUrl} width='60' height='60'></img>
               </div>
             </div>
           )}

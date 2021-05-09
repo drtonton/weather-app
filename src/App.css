@@ -75,6 +75,10 @@
   display: flex;
 }
 
+.temperatureValue {
+  font-size: 50px;
+}
+
 .selectedScale {
   font-weight: 600;
 }
