@@ -94,31 +94,37 @@ function LocationSearch() {
           }}
         />
         <label className='fieldLabel'>
-          City name
+          City name (case sensitive)
         </label>
       </div>
-      <div className='searchResults'>
-        {inputValue !== '' && matchedCities.map(city => (
-          <div className="cityOption" key={city.id} onClick={() => handleCitySelect(city)}>
-            {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
-          </div>
-        ))}
-      </div>
-      <div className='weatherData'>
-        {/* todo: use a loader here instead */}
-        {displayWeatherData && (
-          <div>
-            <div className="temperatureData">
-              <div onClick={() => setIsFahrenheit(!isFahrenheit)}>{isFahrenheit ? '°F' : '°C'}</div>
-              <div>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
+      <div className='resultsContainer'>
+        <div className='weatherData'>
+          {/* todo: use a loader here instead */}
+          {displayWeatherData && (
+            <div>
+              <div className='temperatureData'>
+                <div>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
+                {/* <div onClick={() => setIsFahrenheit(!isFahrenheit)}>{isFahrenheit ? '°F' : '°C'}</div> */}
+                <div className='temperatureScale' onClick={() => setIsFahrenheit(!isFahrenheit)}>
+                  <div>°F |</div>
+                  <div>°C</div>
+                </div>
+              </div>
+              <div className='generalInfo'>
+                <div>{selectedCity}</div>
+                <div>{weatherData.generalDescription}</div>
+                <img alt='default' src={weatherData.descriptionIconUrl} width='60' height='60'></img>
+              </div>
             </div>
-            <div className='generalInfo'>
-              <div>{selectedCity}</div>
-              <div>{weatherData.generalDescription}</div>
-              <img alt="meaning" src={weatherData.descriptionIconUrl} width='60' height='60'></img>
+          )}
+        </div>
+        <div className='searchResults'>
+          {inputValue !== '' && matchedCities.map(city => (
+            <div className="cityOption" key={city.id} onClick={() => handleCitySelect(city)}>
+              {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
             </div>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
     </div>
     
