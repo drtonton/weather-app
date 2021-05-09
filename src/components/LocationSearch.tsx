@@ -115,7 +115,7 @@ function LocationSearch() {
             <div className='generalInfo'>
               <div>{selectedCity}</div>
               <div>{weatherData.generalDescription}</div>
-              <img alt="meaning" src={weatherData.descriptionIconUrl} width='150' height='150'></img>
+              <img alt="meaning" src={weatherData.descriptionIconUrl} width='60' height='60'></img>
             </div>
           </div>
         )}
