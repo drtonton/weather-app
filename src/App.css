@@ -3,6 +3,10 @@
   color: #464655;
 }
 
+body {
+  height: 100vh;
+}
+
 .resultsContainer {
   display: flex;
   justify-content: flex-start;
