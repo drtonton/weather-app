@@ -87,6 +87,7 @@ function LocationSearch() {
           className='fieldInput'
           id='locationInput'
           type='text'
+          placeholder='type here'
           value={inputValue}
           onChange={(e) => {
             throttledCitySearch(e.target.value);
@@ -105,7 +106,6 @@ function LocationSearch() {
               <div className='temperatureData'>
                 <img alt='default' src={weatherData.descriptionIconUrl} width='60' height='60'></img>
                 <div className='temperatureValue'>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
-                {/* <div onClick={() => setIsFahrenheit(!isFahrenheit)}>{isFahrenheit ? '°F' : '°C'}</div> */}
                 <div className='temperatureScale' onClick={() => setIsFahrenheit(!isFahrenheit)}>
                   <div className={isFahrenheit ? 'selectedScale' : ''}>°F</div>
                   <div>|</div>
