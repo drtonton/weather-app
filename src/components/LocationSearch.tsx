@@ -99,7 +99,7 @@ function LocationSearch() {
       </div>
       <div className='searchResults'>
         {inputValue !== '' && matchedCities.map(city => (
-          <div key={city.id} onClick={() => handleCitySelect(city)}>
+          <div className="cityOption" key={city.id} onClick={() => handleCitySelect(city)}>
             {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
           </div>
         ))}
