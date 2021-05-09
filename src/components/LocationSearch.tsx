@@ -85,6 +85,7 @@ function LocationSearch() {
       <div className='fieldWrapper'>
         <input
           className='fieldInput'
+          autoComplete="off"
           id='locationInput'
           type='text'
           placeholder='type here'
