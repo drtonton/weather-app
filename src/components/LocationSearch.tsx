@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 let timer: any;
@@ -44,6 +44,11 @@ function LocationSearch() {
   });
   const [displayWeatherData, setDisplayWeatherData] = useState<boolean>(false);
   const [isFahrenheit, setIsFahrenheit] = useState<boolean>(true);
+
+
+  useEffect(() => {
+    console.log('DOG CHRISTMAS');
+  })
 
   // API CALLS
   // todo: instead of any[], make a Type of the return shape and enforce it
@@ -92,7 +97,7 @@ function LocationSearch() {
           value={inputValue}
           onChange={(e) => {
             throttledCitySearch(e.target.value);
-            setInputValue(e.target.value); // todo: prevent whitespace as first char
+            setInputValue(e.target.value);
           }}
         />
         <label className='fieldLabel'>
@@ -100,33 +105,32 @@ function LocationSearch() {
         </label>
       </div>
       <div className='resultsContainer'>
-        <div className='weatherData'>
-          {/* todo: use a loader here instead */}
-          {displayWeatherData && (
-            <div>
-              <div className='temperatureData'>
-                <img alt='default' src={weatherData.descriptionIconUrl} width='60' height='60'></img>
-                <div className='temperatureValue'>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
-                <div className='temperatureScale' onClick={() => setIsFahrenheit(!isFahrenheit)}>
-                  <div className={isFahrenheit ? 'selectedScale' : ''}>°F</div>
-                  <div>|</div>
-                  <div className={!isFahrenheit ? 'selectedScale' : ''}>°C</div>
-                </div>
-              </div>
-              <div className='generalInfo'>
-                <div>{selectedCity}</div>
-                <div>{weatherData.generalDescription}</div>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className='searchResults'>
+        {matchedCities.length !== 0 && inputValue !== '' && (
+          <div className='searchResults'>
           {inputValue !== '' && matchedCities.map(city => (
             <div className="cityOption" key={city.id} onClick={() => handleCitySelect(city)}>
               {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
             </div>
           ))}
         </div>
+        )}
+        {matchedCities.length === 0 && displayWeatherData && (
+          <div className='weatherData'>
+            <div className='temperatureData'>
+              <img alt='default' src={weatherData.descriptionIconUrl} width='60' height='60'></img>
+              <div className='temperatureValue'>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
+              <div className='temperatureScale' onClick={() => setIsFahrenheit(!isFahrenheit)}>
+                <div className={isFahrenheit ? 'selectedScale' : ''}>°F</div>
+                <div>|</div>
+                <div className={!isFahrenheit ? 'selectedScale' : ''}>°C</div>
+              </div>
+            </div>
+            <div className='generalInfo'>
+              <div>{selectedCity}</div>
+              <div>{weatherData.generalDescription}</div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
     
