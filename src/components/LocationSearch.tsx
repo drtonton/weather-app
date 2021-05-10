@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import { City, WeatherData } from '../common/types';
@@ -40,7 +40,6 @@ function LocationSearch() {
     return weatherData.data;
   }
   
-
   const throttledCitySearch = (searchValue: string): void => {
     if (timer) {
       clearTimeout(timer);
@@ -72,8 +71,9 @@ function LocationSearch() {
       <div className='fieldWrapper'>
         <input
           className='fieldInput'
-          autoComplete="off"
+          autoComplete='off'
           id='locationInput'
+          data-testid='location-input-test'
           type='text'
           placeholder='type here'
           value={inputValue}
@@ -83,7 +83,7 @@ function LocationSearch() {
             setInputValue(e.target.value);
           }}
         />
-        <label className='fieldLabel'>
+        <label className='fieldLabel' data-testid='location-input-label-test'>
           City Name (case sensitive)
         </label>
       </div>
@@ -91,7 +91,7 @@ function LocationSearch() {
         {matchedCities.length !== 0 && inputValue !== '' && (
           <div className='searchResults'>
           {matchedCities.map(city => (
-            <div className="cityOption" key={city.id} onClick={() => handleCitySelect(city)}>
+            <div className='cityOption' data-testid='city-option-test' key={city.id} onClick={() => handleCitySelect(city)}>
               {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
             </div>
           ))}
@@ -99,30 +99,28 @@ function LocationSearch() {
         )}
         {displayNoCityResults && !isCityDataLoading && (
           <div className='searchResults'>
-            <div className="cityOption">(no results)</div>
+            <div className='cityOption'>(no results)</div>
           </div>
         )}
         {(matchedCities.length === 0 || inputValue === '') && displayWeatherData  && !displayNoCityResults && (
-          <div className='weatherData'>
+          <div className='weatherData' data-testid='weather-data-test'>
             <div className='temperatureData'>
               <img alt='default' src={weatherData.descriptionIconUrl} width='60' height='60'></img>
-              <div className='temperatureValue'>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
-              <div className='temperatureScale' onClick={() => setIsFahrenheit(!isFahrenheit)}>
+              <div className='temperatureValue' data-testid='temp-value-test'>{isFahrenheit ? weatherData.currentTempFahr : weatherData.currentTempCels}</div>
+              <div className='temperatureScale' data-testid='temp-scale-test' onClick={() => setIsFahrenheit(!isFahrenheit)}>
                 <div className={isFahrenheit ? 'selectedScale' : ''}>°F</div>
                 <div>|</div>
                 <div className={!isFahrenheit ? 'selectedScale' : ''}>°C</div>
               </div>
             </div>
-            <div className='generalInfo'>
-              <div>{selectedCity}</div>
-              <div>{weatherData.generalDescription}</div>
+            <div className='generalInfo' data-testid='general-info-test'>
+              <div data-testid='location-name-test'>{selectedCity}</div>
+              <div data-testid='description-test'>{weatherData.generalDescription}</div>
             </div>
           </div>
         )}
       </div>
     </div>
-    
-    
   );
 }
 
