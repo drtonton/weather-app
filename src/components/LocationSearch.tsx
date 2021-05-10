@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { City, WeatherData } from '../common/types';
@@ -39,6 +39,7 @@ function LocationSearch() {
     const weatherData = await axios.get(url);
     return weatherData.data;
   }
+  
 
   const throttledCitySearch = (searchValue: string): void => {
     if (timer) {
@@ -77,6 +78,7 @@ function LocationSearch() {
           placeholder='type here'
           value={inputValue}
           onChange={(e) => {
+            if (e.target.value === ' ' && inputValue === '') return;
             throttledCitySearch(e.target.value);
             setInputValue(e.target.value);
           }}
