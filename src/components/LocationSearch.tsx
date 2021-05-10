@@ -72,6 +72,7 @@ function LocationSearch() {
     }
     timer = setTimeout(async() => {
       const matched = await fetchCityMatches(searchValue);
+      console.log('MTACHED', matched);
       setMatchedCities(matched);
       timer = undefined;
     }, 500);
@@ -101,7 +102,7 @@ function LocationSearch() {
           }}
         />
         <label className='fieldLabel'>
-          City name (case sensitive)
+          City Name (case sensitive)
         </label>
       </div>
       <div className='resultsContainer'>
@@ -114,7 +115,7 @@ function LocationSearch() {
           ))}
         </div>
         )}
-        {matchedCities.length === 0 && displayWeatherData && (
+        {(matchedCities.length === 0 || inputValue === '') && displayWeatherData && (
           <div className='weatherData'>
             <div className='temperatureData'>
               <img alt='default' src={weatherData.descriptionIconUrl} width='60' height='60'></img>
