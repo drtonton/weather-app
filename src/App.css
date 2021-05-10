@@ -17,6 +17,8 @@ body {
 
 .resultsContainer {
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .searchResults {
@@ -92,10 +94,17 @@ body {
 .temperatureScale {
   font-size: 20px;
   display: flex;
+  cursor: pointer;
+}
+
+.temperatureScale > div {
+  margin: 3px;
 }
 
 .temperatureValue {
   font-size: 70px;
+  min-width: 75px;
+  text-align: center;
 }
 
 .selectedScale {
