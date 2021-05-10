@@ -8,7 +8,7 @@
 
 body {
   height: 100vh;
-  background-color: lightgray;
+  background-color: #F2F5DE;
   max-width: 700px;
   margin: auto;
   padding-top: 20px;
@@ -45,7 +45,7 @@ body {
 }
 
 .fieldWrapper {
-  background-color: lightgray;
+  background-color: #F2F5DE;
   position: relative;
 }
 
@@ -104,4 +104,5 @@ body {
 
 .generalInfo {
   margin-left: 20px;
+  font-size: 16pt;
 }

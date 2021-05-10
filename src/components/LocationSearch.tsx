@@ -1,30 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
+import { City, WeatherData } from '../common/types';
+
 let timer: any;
-
-// todo: prevent whitespace from being entered as first character in input
-
-// todo: needs to go in a type file
-interface City {
-  id: number;
-  name: string;
-  state: string;
-  country: string;
-}
-
-interface WeatherData {
-  generalDescription: string;
-  descriptionIconUrl: string;
-  hiTempFahr: any;
-  loTempFahr: any;
-  feelsLikeFahr: any;
-  currentTempFahr: any;
-  hiTempCels: any;
-  loTempCels: any;
-  feelsLikeCels: any;
-  currentTempCels: any;
-}
 
 function LocationSearch() {
   const [inputValue, setInputValue] = useState('');
@@ -44,11 +23,8 @@ function LocationSearch() {
   });
   const [displayWeatherData, setDisplayWeatherData] = useState<boolean>(false);
   const [isFahrenheit, setIsFahrenheit] = useState<boolean>(true);
-
-
-  useEffect(() => {
-    console.log('DOG CHRISTMAS');
-  })
+  const [isCityDataLoading, setIsCityDataLoading] = useState<boolean>(false);
+  const [displayNoCityResults, setDisplayNoCityResults] = useState<boolean>(false);
 
   // API CALLS
   // todo: instead of any[], make a Type of the return shape and enforce it
@@ -71,9 +47,15 @@ function LocationSearch() {
       clearTimeout(timer);
     }
     timer = setTimeout(async() => {
+      setIsCityDataLoading(true);
       const matched = await fetchCityMatches(searchValue);
-      console.log('MTACHED', matched);
+      setIsCityDataLoading(false);
       setMatchedCities(matched);
+      if (matched.length === 0) {
+        setDisplayNoCityResults(true);
+      } else {
+        setDisplayNoCityResults(false);
+      }
       timer = undefined;
     }, 500);
   }
@@ -108,14 +90,19 @@ function LocationSearch() {
       <div className='resultsContainer'>
         {matchedCities.length !== 0 && inputValue !== '' && (
           <div className='searchResults'>
-          {inputValue !== '' && matchedCities.map(city => (
+          {matchedCities.map(city => (
             <div className="cityOption" key={city.id} onClick={() => handleCitySelect(city)}>
               {`${city.name}${city.state ? ', ' + city.state : ''}${city.country ? ' (' + city.country + ')' : ''}`}
             </div>
           ))}
         </div>
         )}
-        {(matchedCities.length === 0 || inputValue === '') && displayWeatherData && (
+        {displayNoCityResults && !isCityDataLoading && (
+          <div className='searchResults'>
+            <div className="cityOption">(no results)</div>
+          </div>
+        )}
+        {(matchedCities.length === 0 || inputValue === '') && displayWeatherData  && !displayNoCityResults && (
           <div className='weatherData'>
             <div className='temperatureData'>
               <img alt='default' src={weatherData.descriptionIconUrl} width='60' height='60'></img>
