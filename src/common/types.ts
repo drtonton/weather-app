@@ -1,8 +1,8 @@
 export interface City {
   id: number;
   name: string;
-  state: string;
-  country: string;
+  state?: string;
+  country?: string;
 }
 
 export interface WeatherData {

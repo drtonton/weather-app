@@ -6,6 +6,7 @@ import { City, WeatherData } from '../common/types';
 let timer: any;
 
 function LocationSearch() {
+  // === STATE DECLARATIONS === //
   const [inputValue, setInputValue] = useState('');
   const [matchedCities, setMatchedCities] = useState<City[]>([]);
   const [selectedCity, setSelectedCity] = useState('');
@@ -26,22 +27,19 @@ function LocationSearch() {
   const [isCityDataLoading, setIsCityDataLoading] = useState<boolean>(false);
   const [displayNoCityResults, setDisplayNoCityResults] = useState<boolean>(false);
 
-  // API CALLS
-  // todo: instead of any[], make a Type of the return shape and enforce it
-  const fetchCityMatches = async (fieldInput: string): Promise<any[]> => {
+  // === OTHER VARIABLES / FUNCTIONS === //
+  const fetchCityMatches = async (fieldInput: string): Promise<City[]> => {
     const url = `http://localhost:8001/city/?name=${fieldInput}`;
     const cities = await axios.get(url);
     return cities.data;
   }
 
-  // todo: make a type for the weather data
   const fetchWeatherData = async (cityId: number): Promise<WeatherData> => {
     const url = `http://localhost:8001/weather/?cityId=${cityId}`;
     const weatherData = await axios.get(url);
     return weatherData.data;
   }
 
-  // HELPER FUNCTIONS
   const throttledCitySearch = (searchValue: string): void => {
     if (timer) {
       clearTimeout(timer);
@@ -127,16 +125,3 @@ function LocationSearch() {
 }
 
 export default LocationSearch;
-
-// interface WeatherData {
-//   generalDescription: string;
-//   descriptionIconUrl: string;
-//   hiTempFahr: number;
-//   loTempFahr: number;
-//   feelsLikeFahr: number;
-//   currentTempFahr: number;
-//   hiTempCels: number;
-//   loTempCels: number;
-//   feelsLikeCels: number;
-//   currentTempCels: number;
-// }
