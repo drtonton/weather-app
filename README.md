@@ -6,12 +6,10 @@ A simple React/Typescript application that returns weather information for citie
 
 `yarn start` <- to run.
 
-`yarn test` <- to execute all tests
+`yarn test` <- to raise testing interface(it will bring up an interface with a prompt: enter `a` to execute all tests)
 
 # Notes/Todos
 * more weather data! "feels like", wind and pressure information, etc is all available through the OpenWeather API being used
-* 
-
 
 
 (below is auto-generated from [Create React App]. Removed most of that content because its a bit excessive, but information is available through the link below for any curious readers)
