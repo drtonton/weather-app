@@ -3,11 +3,11 @@ A simple React/Typescript application that returns weather information for citie
 Pairs with this API: https://github.com/drtonton/weather-api
 
 # Installation, Running locally, and Tests
-`yarn` <- to install.
+`npm install` <- to install.
 
-`yarn start` <- to run. 
+`npm start` <- to run. 
 
-`yarn test` <- to raise testing interface. Enter `a` at the prompt to execute all tests.
+`npm test` <- to raise testing interface. Enter `a` at the prompt to execute all tests.
 
 # Notes/Todos
 * more weather data! "feels like", wind and pressure information, etc is all available through the OpenWeather API being used
